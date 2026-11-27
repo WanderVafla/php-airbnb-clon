@@ -16,6 +16,29 @@ Users can offer their own apartments for rent and book apartments offered by oth
 - Profile page to edit username, email and password.
 - Admin dashboard to list, delete and promote users.
 
+## Wireframes
+
+The wireframes of the application are stored in [`docs/wireframes`](docs/wireframes).
+
+### Core screens
+
+| Home | Apartments list |
+| --- | --- |
+| ![Home: top rented locations and suggestions](docs/wireframes/01-home.png) | ![Apartments list with filters and sorting](docs/wireframes/02-apartments-list.png) |
+| **Apartment details** | **Booking** |
+| ![Apartment details with availability](docs/wireframes/03-apartment-details.png) | ![Booking page with dates and total](docs/wireframes/04-booking.png) |
+
+### Other screens
+
+- [My bookings](docs/wireframes/05-my-bookings.png)
+- [Apartment create / edit](docs/wireframes/06-apartment-form.png)
+- [Delete apartment confirmation](docs/wireframes/07-delete-confirm.png)
+- [404 not found](docs/wireframes/08-not-found.png)
+- [Log in](docs/wireframes/09-login.png)
+- [Register](docs/wireframes/10-register.png)
+- [Profile](docs/wireframes/11-profile.png)
+- [Admin: manage users](docs/wireframes/12-admin-users.png)
+
 ## Dependencies
 
 ### Required tools
