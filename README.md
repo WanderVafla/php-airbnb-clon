@@ -1,58 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP Airbnb Clone
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A simple Airbnb-style rental platform built with **Laravel** as a Jobtrek training project (brief `JT_DEV_B52`).
 
-## About Laravel
+Users can offer their own apartments for rent and book apartments offered by other users. Pages are rendered on the server with **Blade** templates; no frontend JavaScript framework is used.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Registration, login and logout with username, email and password (Laravel built-in authentication).
+- Apartments list with filters (my apartments, my bookings, location) and sorting (price, number of rooms).
+- Create, edit (owner or admin) and delete (owner) an apartment, with photo upload.
+- Apartment details page with availability status.
+- Book an apartment when it is available, and cancel a future booking.
+- "My bookings" page.
+- Home page with the 3 most rented locations and 2 apartment suggestions per location.
+- Profile page to edit username, email and password.
+- Admin dashboard to list, delete and promote users.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Dependencies
 
-## Learning Laravel
+### Required tools
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Tool | Version | Used for |
+| --- | --- | --- |
+| [PHP](https://www.php.net/) | 8.5+ with `pdo_pgsql` | Running the application |
+| [Composer](https://getcomposer.org/) | 2+ | PHP dependencies |
+| [Node.js](https://nodejs.org/) and npm | 22+ | Building CSS and assets with Vite |
+| [Docker](https://www.docker.com/) with Docker Compose | recent | Running the PostgreSQL database |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Main packages
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+| Package | Role |
+| --- | --- |
+| `laravel/framework` 13 | PHP framework |
+| PostgreSQL 18 (Docker image `postgres:18-alpine`) | Database |
+| `vite` + `laravel-vite-plugin` | Asset bundling |
+| `tailwindcss` 4 | Styling |
+| `laravel/pint` (PSR-12 preset) | Code formatter |
+| `pestphp/pest` | Tests |
 
-## Agentic Development
+The full lists are in `composer.json` and `package.json`.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Installation
 
-```bash
-composer require laravel/boost --dev
+1. Clone the repository and go into the folder:
 
-php artisan boost:install
-```
+   ```bash
+   git clone git@github.com:WanderVafla/php-airbnb-clon.git
+   cd php-airbnb-clon
+   ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+2. Create your environment file:
 
-## Contributing
+   ```bash
+   cp .env.example .env
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   The database settings in `.env` (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, `DB_PORT`) are also used by Docker Compose to create the database. If port `5432` is already used on your machine, set another port in both `DB_PORT` and `FORWARD_DB_PORT` (for example `5433`).
 
-## Code of Conduct
+3. Start the PostgreSQL database:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   docker compose up -d
+   ```
 
-## Security Vulnerabilities
+   Check that the container is `healthy` with `docker compose ps`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. Install the dependencies, generate the app key, run the migrations and build the assets:
 
-## License
+   ```bash
+   composer setup
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   This runs `composer install`, `php artisan key:generate`, `php artisan migrate`, `npm install` and `npm run build`.
+
+5. Start the application:
+
+   ```bash
+   composer dev
+   ```
+
+   Then open <http://localhost:8000>.
+
+To stop the database, run `docker compose down`. The data stays in the Docker volume `pgsql-data`.
+
+## Development
+
+| Task | Command |
+| --- | --- |
+| Run the tests | `php artisan test` |
+| Format the code (Pint, PSR-12) | `vendor/bin/pint` |
+| Reset the database | `php artisan migrate:fresh` |
